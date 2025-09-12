@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Switching Button Window</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .window {
+            width: 300px;
+            height: 200px;
+            border: 2px solid;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* White Theme */
+        .white-theme {
+            background-color: white;
+            color: black;
+        }
+
+        .white-theme .window {
+            background-color: white;
+            border-color: black;
+        }
+
+        .white-theme .theme-button {
+            background-color: black;
+            color: white;
+        }
+
+        .white-theme .theme-button:hover {
+            background-color: #333;
+        }
+
+        /* Black Theme */
+        .black-theme {
+            background-color: black;
+            color: white;
+        }
+
+        .black-theme .window {
+            background-color: black;
+            border-color: white;
+        }
+
+        .black-theme .theme-button {
+            background-color: white;
+            color: black;
+        }
+
+        .black-theme .theme-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .status-text {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="white-theme">
+    <div class="status-text">Theme switching every 1 second</div>
+    <div class="window">
+        <button class="theme-button" onclick="toggleTheme()">Click Me!</button>
+    </div>
+
+    <script>
+        // Global variables
+        window.isWhiteTheme = true;
+        window.intervalId = null;
+
+        function toggleTheme() {
+            const body = document.body;
+            
+            if (window.isWhiteTheme) {
+                body.className = 'black-theme';
+                window.isWhiteTheme = false;
+            } else {
+                body.className = 'white-theme';
+                window.isWhiteTheme = true;
+            }
+        }
+
+        function startAutoThemeSwitch() {
+            // Clear any existing interval
+            if (window.intervalId) {
+                clearInterval(window.intervalId);
+            }
+            
+            // Start the automatic theme switching every 1 second (1000ms)
+            window.intervalId = setInterval(toggleTheme, 1000);
+            console.log('Theme switching started with interval ID:', window.intervalId);
+        }
+
+        // Start the automatic theme switching when the page loads
+        window.addEventListener('load', function() {
+            console.log('Page loaded, starting theme switching...');
+            startAutoThemeSwitch();
+        });
+
+        // Optional: Allow manual button clicks to work alongside automatic switching
+        // The button click will trigger an immediate theme change
+        window.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.theme-button');
+            if (button) {
+                button.addEventListener('click', function() {
+                    // Manually toggle theme and reset the interval to sync
+                    toggleTheme();
+                    startAutoThemeSwitch();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
